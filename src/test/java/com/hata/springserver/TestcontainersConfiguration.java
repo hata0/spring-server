@@ -1,4 +1,4 @@
-package com.hata0.springserver;
+package com.hata.springserver;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;

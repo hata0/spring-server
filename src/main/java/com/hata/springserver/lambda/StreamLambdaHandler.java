@@ -1,9 +1,10 @@
-package com.hata0.springserver.lambda;
+package com.hata.springserver.lambda;
 
 import com.amazonaws.serverless.proxy.spring.SpringBootLambdaContainerHandler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+import com.hata.springserver.SpringServerApplication;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,7 +16,7 @@ public class StreamLambdaHandler implements RequestStreamHandler {
     static {
         try {
             handler = SpringBootLambdaContainerHandler.getAwsProxyHandler(
-                    com.hata0.springserver.SpringServerApplication.class
+                    SpringServerApplication.class
             );
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize Spring context", e);

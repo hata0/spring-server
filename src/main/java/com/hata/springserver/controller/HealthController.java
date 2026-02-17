@@ -1,6 +1,6 @@
-package com.hata0.springserver.controller;
+package com.hata.springserver.controller;
 
-import com.hata0.springserver.dao.HealthDao;
+import com.hata.springserver.dao.HealthDao;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

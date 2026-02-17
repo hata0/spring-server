@@ -1,4 +1,4 @@
-package com.hata0.springserver.dao;
+package com.hata.springserver.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

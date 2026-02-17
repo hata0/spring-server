@@ -1,4 +1,4 @@
-package com.hata0.springserver;
+package com.hata.springserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
