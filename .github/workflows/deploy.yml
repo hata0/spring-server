@@ -14,10 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Install
-        run: |
-          microdnf install -y openssh-clients
-
       - name: Build native image
         run: ./gradlew nativeCompile
 
@@ -26,20 +22,25 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > ec2-key.pem
           chmod 600 ec2-key.pem
 
-      - name: Add known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-
       - name: Copy artifact to EC2
         run: |
-          scp -i ec2-key.pem build/native/nativeCompile/spring-server ${EC2_USER}@${EC2_HOST}:~/spring-server
+          scp \
+            -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            -i ec2-key.pem \
+            build/native/nativeCompile/spring-server \
+            ${EC2_USER}@${EC2_HOST}:~/spring-server
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
 
       - name: Set execute permission
-        run: ssh -i ec2-key.pem ${EC2_USER}@${EC2_HOST} 'chmod +x ~/spring-server'
+        run: |
+          ssh \
+            -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            -i ec2-key.pem \
+            ${EC2_USER}@${EC2_HOST} 'chmod +x ~/spring-server'
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
