@@ -26,25 +26,30 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > ec2-key.pem
           chmod 600 ec2-key.pem
 
-      - name: Copy artifact to EC2
+      - name: Upload binary
         run: |
           scp \
             -o StrictHostKeyChecking=no \
             -o UserKnownHostsFile=/dev/null \
             -i ec2-key.pem \
             build/native/nativeCompile/spring-server \
-            ${EC2_USER}@${EC2_HOST}:~/spring-server
+            ${EC2_USER}@${EC2_HOST}:/tmp/spring-server
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
 
-      - name: Set execute permission
+      - name: Deploy
         run: |
           ssh \
             -o StrictHostKeyChecking=no \
             -o UserKnownHostsFile=/dev/null \
             -i ec2-key.pem \
-            ${EC2_USER}@${EC2_HOST} 'chmod +x ~/spring-server && sudo systemctl restart spring-server'
+            ${EC2_USER}@${EC2_HOST} '
+              sudo mv /tmp/spring-server /opt/spring-server/spring-server &&
+              sudo chown spring:spring /opt/spring-server/spring-server &&
+              sudo chmod 755 /opt/spring-server/spring-server &&
+              sudo systemctl restart spring-server
+            '
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
