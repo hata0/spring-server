@@ -13,6 +13,6 @@ public class HealthDao {
     }
 
     public String check() {
-        return jdbcTemplate.queryForObject("SELECT 'OK'", String.class);
+        return jdbcTemplate.queryForObject("SELECT 'OK!!'", String.class);
     }
 }
