@@ -39,10 +39,10 @@ jobs:
 
       - name: Debug - Check Dockerfile existence
         run: |
-          if [ -f build/native/nativeCompile/Dockerfile ]; then
-            echo "Dockerfile exists"
+          if [ -f Dockerfile ]; then
+            echo "Dockerfile exists in root"
           else
-            echo "Dockerfile not found!"
+            echo "Dockerfile not found in root!"
             exit 1
           fi
 
