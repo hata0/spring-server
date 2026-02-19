@@ -1,0 +1,22 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  native-build:
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/graalvm/graalvm-community:25.0.2
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Build native image
+        run: |
+          ./gradlew nativeCompile
+
+      - name: Upload native binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-binary
+          path: build/native/nativeCompile/spring-server
