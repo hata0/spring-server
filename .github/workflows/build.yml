@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  native-build:
+  build:
     runs-on: ubuntu-24.04
     container:
       image: ghcr.io/graalvm/graalvm-community:25.0.2
