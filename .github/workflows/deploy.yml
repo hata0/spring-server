@@ -24,6 +24,7 @@ jobs:
         run: |
           mkdir -p build/native/nativeCompile
           gcloud storage cp gs://${{ secrets.GCP_BUCKET_NAME }}/spring-server build/native/nativeCompile/spring-server
+          chmod +x build/native/nativeCompile/spring-server
 
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
