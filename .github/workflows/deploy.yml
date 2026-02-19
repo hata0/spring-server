@@ -28,6 +28,24 @@ jobs:
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
 
+      - name: Debug - Show current directory
+        run: pwd
+
+      - name: Debug - List files in root
+        run: ls -la
+
+      - name: Debug - List files in native build folder
+        run: ls -la build/native/nativeCompile
+
+      - name: Debug - Check Dockerfile existence
+        run: |
+          if [ -f build/native/nativeCompile/Dockerfile ]; then
+            echo "Dockerfile exists"
+          else
+            echo "Dockerfile not found!"
+            exit 1
+          fi
+
       - name: Build and Push Docker image
         run: |
           docker build -t ${{ secrets.DOCKER_IMAGE }}:latest .
