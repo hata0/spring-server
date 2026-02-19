@@ -4,7 +4,10 @@ WORKDIR /opt/spring-server
 
 COPY build/native/nativeCompile/spring-server /opt/spring-server/spring-server
 
+RUN chmod +x /opt/spring-server/spring-server
+
+ENV PORT 8080
+
 USER nonroot:nonroot
-EXPOSE 8080
 
 ENTRYPOINT ["/opt/spring-server/spring-server"]
