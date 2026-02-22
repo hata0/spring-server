@@ -1,9 +1,17 @@
 resource "google_service_account" "github_actions" {
-  account_id = "${local.env}-${var.git-sa-id}"
+  account_id = "${local.env}-${var.git_sa_id}"
 }
 
-resource "google_service_account_key" "github_actions_key" {
+resource "google_service_account_key" "github_actions" {
   service_account_id = google_service_account.github_actions.name
+}
+
+resource "google_project_iam_member" "github_actions" {
+  for_each = local.git_sa_roles
+
+  project = var.project_id
+  role = each.value
+  member  = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
 resource "google_artifact_registry_repository" "this" {

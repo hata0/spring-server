@@ -1,7 +1,6 @@
 variable "project_id" {}
 variable "region" {}
-variable "git-sa-id" {}
-variable "git-sa-name" {}
+variable "git_sa_id" {}
 variable "gar_id" {}
 variable "gcr_name" {}
 variable "gcr_image" {}
