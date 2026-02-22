@@ -10,15 +10,21 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup SDKMAN and install Java
+      - name: Install GraalVM CE
         run: |
-          curl -s "https://get.sdkman.io" | bash
-          source "$HOME/.sdkman/bin/sdkman-init.sh"
-          sdk env install
-          sdk env
+          GRAALVM_VERSION=25.0.2
+          JAVA_HOME=/opt/java/$GRAALVM_VERSION-graalce
+          
+          curl -L -o graalvm.tar.gz https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-$GRAALVM_VERSION/graalvm-community-jdk-$GRAALVM_VERSION_linux-x64_bin.tar.gz
+          
+          mkdir -p $JAVA_HOME
+          tar -xzf graalvm.tar.gz -C $JAVA_HOME --strip-components=1
+          rm graalvm.tar.gz
+          
+          export JAVA_HOME=$JAVA_HOME
+          export PATH=$JAVA_HOME/bin:$PATH
+          
           java -version
-          echo $PATH
-          native-image --version
 
       - name: Restore native cache
         id: native-cache
