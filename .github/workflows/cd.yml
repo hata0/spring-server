@@ -4,13 +4,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  cd:
     runs-on: ubuntu-24.04
-    container:
-      image: ghcr.io/graalvm/graalvm-community:25.0.2
 
     steps:
       - uses: actions/checkout@v6
+
+      - name: Setup SDKMAN and install Java
+        run: |
+          curl -s "https://get.sdkman.io" | bash
+          source "$HOME/.sdkman/bin/sdkman-init.sh"
+          sdk env install
+          sdk env
+          java -version
 
       - name: Restore native cache
         id: native-cache
@@ -19,30 +25,16 @@ jobs:
           path: build/native/nativeCompile/spring-server
           key: native-${{ runner.arch }}-test
 
-      - name: Skip build if cache exists
-        if: steps.native-cache.outputs.cache-hit == 'true'
-        run: |
-          echo "Cache exists, skipping build."
-          exit 0
-
       - name: Build native image
-        run: ./gradlew nativeCompile
+        run: |
+          if [ "${{ steps.native-cache.outputs.cache-hit }}" != "true" ]; then
+            ./gradlew nativeCompile
+          else
+            echo "Cache hit, skipping build."
+          fi
 
       - name: Save native cache
         uses: actions/cache/save@v5
-        with:
-          path: build/native/nativeCompile/spring-server
-          key: native-${{ runner.arch }}-test
-
-  docker:
-    runs-on: ubuntu-24.04
-    needs: build
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Restore native cache
-        uses: actions/cache/restore@v5
         with:
           path: build/native/nativeCompile/spring-server
           key: native-${{ runner.arch }}-test
@@ -57,7 +49,7 @@ jobs:
       - name: Make executable
         run: chmod +x build/native/nativeCompile/spring-server
 
-      # 以下、Docker/GCP は必要に応じて有効化
+      # --- Docker/GCP は必要に応じて有効化 ---
       # - uses: google-github-actions/auth@v3
       #   with:
       #     credentials_json: ${{ secrets.GCP_SA_KEY }}
