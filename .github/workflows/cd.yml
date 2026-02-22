@@ -17,8 +17,8 @@ jobs:
           sdk env install
           sdk env
           java -version
-          native-image --version
           echo $PATH
+          native-image --version
 
       - name: Restore native cache
         id: native-cache
