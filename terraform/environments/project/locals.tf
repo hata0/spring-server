@@ -1,5 +1,6 @@
 locals {
   services = toset([
-    "artifactregistry.googleapis.com"
+    "artifactregistry.googleapis.com",
+    "run.googleapis.com"
   ])
 }
