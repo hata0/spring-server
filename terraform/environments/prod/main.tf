@@ -20,6 +20,8 @@ resource "google_artifact_registry_repository" "this" {
 }
 
 resource "google_cloud_run_v2_service" "this" {
+  count = local.enable_cloud_run ? 1 : 0
+
   name = "${local.env}-${var.gcr_name}"
   location = var.region
   deletion_protection = false
@@ -57,7 +59,9 @@ resource "google_cloud_run_v2_service" "this" {
 }
 
 resource "google_cloud_run_v2_service_iam_member" "this" {
-  name = google_cloud_run_v2_service.this.name
+  count = local.enable_cloud_run ? 1 : 0
+
+  name = google_cloud_run_v2_service.this[0].name
   role = "roles/run.invoker"
   member = "allUsers"
 }
