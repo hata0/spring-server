@@ -12,10 +12,9 @@ jobs:
 
       - name: Install GraalVM CE
         run: |
-          GRAALVM_VERSION=25.0.2
-          JAVA_HOME=/opt/java/$GRAALVM_VERSION-graalce
+          JAVA_HOME=/opt/java/25.0.2-graalce
           
-          curl -L -o graalvm.tar.gz https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-$GRAALVM_VERSION/graalvm-community-jdk-$GRAALVM_VERSION_linux-x64_bin.tar.gz
+          curl -L -o graalvm.tar.gz https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-25.0.2/graalvm-community-jdk-25.0.2_linux-x64_bin.tar.gz
           
           mkdir -p $JAVA_HOME
           tar -xzf graalvm.tar.gz -C $JAVA_HOME --strip-components=1
