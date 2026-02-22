@@ -41,3 +41,9 @@ out/
 *.pem
 docs/private/
 gcp-key.json
+
+.terraform
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfvars
