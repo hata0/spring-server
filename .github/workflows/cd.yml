@@ -44,13 +44,6 @@ jobs:
           path: build/native/nativeCompile/spring-server
           key: native-${{ runner.arch }}-test
 
-      - name: Ensure native binary exists
-        run: |
-          if [ ! -f build/native/nativeCompile/spring-server ]; then
-            echo "Native binary not found. Run build first."
-            exit 1
-          fi
-
       - name: Make executable
         run: chmod +x build/native/nativeCompile/spring-server
 
