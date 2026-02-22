@@ -14,35 +14,35 @@ jobs:
         run: |
           JAVA_HOME=/opt/java/25.0.2-graalce
           
-          curl -L -o graalvm.tar.gz https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-25.0.2/graalvm-community-jdk-25.0.2_linux-x64_bin.tar.gz
+          curl -L -o graalce.tar.gz https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-25.0.2/graalvm-community-jdk-25.0.2_linux-x64_bin.tar.gz
           
           mkdir -p $JAVA_HOME
-          tar -xzf graalvm.tar.gz -C $JAVA_HOME --strip-components=1
-          rm graalvm.tar.gz
+          tar -xzf graalce.tar.gz -C $JAVA_HOME --strip-components=1
+          rm graalce.tar.gz
           
           echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
           echo "$JAVA_HOME/bin" >> $GITHUB_PATH
-          
-          export JAVA_HOME=$JAVA_HOME
-          export PATH=$JAVA_HOME/bin:$PATH
-          
-          java -version
 
-      - name: Restore native cache
-        id: native-cache
-        uses: actions/cache/restore@v5
-        with:
-          path: build/native/nativeCompile/spring-server
-          key: native-${{ runner.arch }}-test
+      # - name: Restore native cache
+      #   id: native-cache
+      #   uses: actions/cache/restore@v5
+      #   with:
+      #     path: build/native/nativeCompile/spring-server
+      #     key: native-${{ runner.arch }}-test
+
+      # - name: Build native image
+      #   run: |
+      #     if [ "${{ steps.native-cache.outputs.cache-hit }}" != "true" ]; then
+      #       echo $JAVA_HOME
+      #       ./gradlew nativeCompile
+      #     else
+      #       echo "Cache hit, skipping build."
+      #     fi
 
       - name: Build native image
         run: |
-          if [ "${{ steps.native-cache.outputs.cache-hit }}" != "true" ]; then
-            echo $JAVA_HOME
-            ./gradlew nativeCompile
-          else
-            echo "Cache hit, skipping build."
-          fi
+          echo $JAVA_HOME
+          ./gradlew nativeCompile
 
       - name: Save native cache
         uses: actions/cache/save@v5
