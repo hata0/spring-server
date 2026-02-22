@@ -24,6 +24,7 @@ jobs:
           export PATH=$JAVA_HOME/bin:$PATH
           
           java -version
+          native-image
 
       - name: Restore native cache
         id: native-cache
@@ -35,6 +36,7 @@ jobs:
       - name: Build native image
         run: |
           if [ "${{ steps.native-cache.outputs.cache-hit }}" != "true" ]; then
+            echo $JAVA_HOME
             ./gradlew nativeCompile
           else
             echo "Cache hit, skipping build."
