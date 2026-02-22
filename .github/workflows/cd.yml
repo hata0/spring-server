@@ -48,7 +48,7 @@ jobs:
       - name: Build native image
         if: steps.native-cache.outputs.cache-hit != 'true'
         run: |
-          ./gradlew nativeCompile
+          ./gradlew nativeCompile --parallel --no-daemon
 
       - name: Make executable
         run: chmod +x build/native/nativeCompile/spring-server
