@@ -1,3 +1,5 @@
 locals {
-  services = toset([])
+  services = toset([
+    "artifactregistry.googleapis.com"
+  ])
 }
