@@ -20,11 +20,13 @@ jobs:
           tar -xzf graalvm.tar.gz -C $JAVA_HOME --strip-components=1
           rm graalvm.tar.gz
           
+          echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
+          echo "$JAVA_HOME/bin" >> $GITHUB_PATH
+          
           export JAVA_HOME=$JAVA_HOME
           export PATH=$JAVA_HOME/bin:$PATH
           
           java -version
-          native-image
 
       - name: Restore native cache
         id: native-cache
